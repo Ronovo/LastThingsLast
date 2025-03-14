@@ -164,17 +164,48 @@ def tossBedroom(characterData):
 
 def searchBoxes(characterData):
     print("You are about to search through boxes. This will take some time.")
-    print("Options:")
-    print("1. Take half to hotel with you (6 Hours + 2 Hours for Transport")
-    print("2. Go through all boxes - 12 Hours")
-    boxInput = input("What do you want to do?\n")
-    match int(boxInput):
-        case 1:
-            print("DEBUG : 6 hours + 2")
-        case 2:
-            print("DEBUG : 12 Hours")
-    print("You find papers that show that Clyde had a cabin. They were hidden behind the stacks of paper boxes, in an old shoe box.")
-    print("Cash receipts, notebook to track payments, coordinates. Remembering the key board by the door, you go and look again.")
+    while 1:
+        print("Options:")
+        print("1. Take half to hotel with you (6 Hours + 2 Hours for Transport")
+        print("2. Go through all boxes - 12 Hours")
+        boxInput = input("What do you want to do?\n")
+        check = boxInput.isnumeric()
+        if check:
+            match int(boxInput):
+                case 1:
+                    print("You go to the hotel, and look at the files when you are there.")
+                    characterData = timeHelper.subtractTime(characterData,8)
+                    print("After 2 hours of moving boxes from the apartment to the hotel, you start looking through the documents.")
+                    print("6 Hours later, you come back with nothing interesting.")
+                    sleepNumber = input("How many hours to you want to sleep? (Default: 8)\n")
+                    check = sleepNumber.isnumeric()
+                    if check:
+                        sleepNumber = int(sleepNumber)
+                    else:
+                        sleepNumber = 8
+                    characterData = timeHelper.subtractTime(characterData, sleepNumber)
+                    characterData["Time Until Sleep"] = 12
+                    print("Time to wake up!")
+                    input("Press any button to check the time!\n")
+                    break
+                case 2:
+                    print("You start working on the boxes.")
+                    timeleft = 12 - characterData["Time Until Sleep"]
+                    characterData = timeHelper.subtractTime(characterData,characterData["Time Until Sleep"])
+                    print("You stop working. Looking around, you think you still have " + str(timeleft) + " hours of work left.")
+                    print("You crash at the hotel, and sleep for 10 hours, due to how exhausted you are.")
+                    characterData["Time Until Sleep"] = 12
+                    input("Press any key to check the time...\n")
+                    timeHelper.showTime(characterData)
+                    input("Press any key to go back and finish the job...\n")
+                    characterData = timeHelper.subtractTime(characterData,timeleft)
+                    break
+    timeHelper.showTime(characterData)
+    input("Press any key to continue...")
+    print(
+        "You find papers that show that Clyde had a cabin. They were hidden behind the stacks of paper boxes, in an old shoe box.")
+    print(
+        "Cash receipts, notebook to track payments, coordinates. Remembering the key board by the door, you go and look again.")
     print("You find a house key that looks different from the apartment key.")
     print("You hope this is the cabin key. If not, you might have to use your lockpick training.")
     characterData["Next Scene"] = 3

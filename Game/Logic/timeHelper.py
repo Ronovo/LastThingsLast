@@ -1,9 +1,6 @@
 def subtractTime(characterData, x):
     characterData["Hours Left"] -= x
     characterData["Time Until Sleep"] -= x
-    if characterData["Time Until Sleep"] <= 0:
-        print("You should consider going to a hotel!")
-        print("Pressing past this point will cost willpower")
     return characterData
 
 def showTime(characterData):

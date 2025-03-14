@@ -48,7 +48,7 @@ def inspectRoom(room,descriptionDictionary):
 
 
 
-def actionsInRoom(room, characterData):
+def actionsInRoom(room, characterData, nextScene):
     while 1:
         formatter.clear()
         n = 1
@@ -74,3 +74,5 @@ def actionsInRoom(room, characterData):
                     input("Press any key to continue...\n")
             else:
                 input("Invalid Input. Press anything to try again...")
+        if characterData["Next Scene"] == nextScene:
+            return characterData

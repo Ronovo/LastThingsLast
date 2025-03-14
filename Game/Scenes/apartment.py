@@ -94,7 +94,7 @@ def choiceMenu(characterData, room):
                 case 2:
                     buildingHelper.inspectRoom(room, descriptionDictionary)
                 case 3:
-                    characterData = buildingHelper.actionsInRoom(room, characterData)
+                    characterData = buildingHelper.actionsInRoom(room, characterData, 3)
                 case 4:
                     timeHelper.showTime(characterData)
                     input("Press any key to continue...")

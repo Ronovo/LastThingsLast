@@ -14,7 +14,12 @@ descriptionDictionary = {
     "Bed" : "Small cot, with pillows and blankets. Underneath is a lockbox with a green triangle on it.\nAlso a note?",
     "Tools" : "Various tools, and multiple tool benches.",
     "Gas Cans" : "2 x Five Gallon gas cans, completely full.",
-    "Note" : "DEBUG : NOTE TEXT",
+    "Note" : "To Whom it may concern.\n"
+             "If you are reading this note, I can assume I have died or become incapacitated in some way\n"
+             "before I had the courage to complete my final mission. You will find about 10 gallons of gas\n"
+             "in the shed behind the cabin. Pour it into the septic tank behind the cabin, and ignite it.\n"
+             "You'd be happier if you didn't look inside. Please make sure the remains are kept from my children.\n"
+             "-Clyde",
     "Outhouse" : "Someone used this recently. Why would someone use an outhouse if there is a septic tank?",
     "Septic Tank" : "Half buried septic tank. No pipes run to the cabin. Both entrances have padlocks on them."
 }
@@ -61,7 +66,7 @@ def choiceMenu(characterData, room):
             case 2:
                 buildingHelper.inspectRoom(room, descriptionDictionary)
             case 3:
-                characterData = buildingHelper.actionsInRoom(room, characterData)
+                characterData = buildingHelper.actionsInRoom(room, characterData, 4)
             case 4:
                 timeHelper.showTime(characterData)
                 input("Press any key to continue...")
