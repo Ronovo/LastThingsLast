@@ -5,12 +5,15 @@ on:
     tags:
       - "v*"
 
+permissions:
+  contents: write  # <-- Add this to allow release creation
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest, macos-latest]
+        os: [windows-latest, ubuntu-latest, macos-latest]
 
     steps:
       - name: Checkout Repository
