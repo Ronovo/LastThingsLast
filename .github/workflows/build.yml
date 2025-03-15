@@ -1,6 +1,9 @@
-name: Build Game Executable
+name: Build and Release Game Executable
 
-on: [push, pull_request]
+on:
+  push:
+    tags:
+      - "v*"
 
 jobs:
   build:
@@ -8,7 +11,7 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
-    
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -26,8 +29,32 @@ jobs:
           pyinstaller --onefile main.py
         shell: bash
 
-      - name: Upload Artifact
+      - name: Rename Executable
+        run: |
+          mv dist/main dist/game-${{ matrix.os }}-${{ github.ref_name }}
+        shell: bash
+
+      - name: Upload Executable as Artifact
         uses: actions/upload-artifact@v3
         with:
           name: game-executable-${{ matrix.os }}
-          path: dist/main*
+          path: dist/game-${{ matrix.os }}-${{ github.ref_name }}
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Executable to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          files: dist/game-${{ matrix.os }}-${{ github.ref_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
