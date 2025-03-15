@@ -3,7 +3,7 @@ Text Based Adventure Style Game inspired by Last Things Last, the Delta Green sc
 
 What starts as a simple security check on a dead IRS agent turns into a classic tale of eldritch terror!
 
-###Currently completed:
+### Currently completed:
   - Full Basic Story
     - 4 Scenes
       - Briefing
