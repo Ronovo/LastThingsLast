@@ -4,16 +4,16 @@ import CharacterHelper
 
 cabin = {
     "Entry" : {"Name": "Entry", "Rooms" : ["Cabin","Shed"]},
-    "Cabin" : {"Name": "Cabin","Rooms" : ["Shed"], "Inspect" : ["Bed","Note"], "Actions" : ["Open Box"]},
+    "Cabin" : {"Name": "Cabin","Rooms" : ["Shed"], "Inspect" : ["Bed"], "Actions" : ["Open Box"]},
     "Shed" : {"Name": "Shed","Rooms" : ["Cabin", "Outhouse","Septic Tank"], "Inspect" : ["Tools","Gas Cans"]},
     "Outhouse" : {"Name": "Outhouse","Rooms" : ["Cabin", "Shed","Septic Tank"], "Inspect" : ["Outhouse"]},
-    "Septic Tank" : {"Name": "Septic Tank","Rooms" : ["Cabin", "Shed","Outhouse"], "Inspect" : ["Septic Tank"], "Actions" : ["Open Tank"]}
+    "Septic Tank" : {"Name": "Septic Tank","Rooms" : ["Cabin", "Shed","Outhouse"], "Inspect" : ["Septic Tank"], "Actions" : ["Approach Tank"]}
 }
 
 descriptionDictionary = {
     "Bed" : "Small cot, with pillows and blankets. Underneath is a lockbox with a green triangle on it.\nAlso a note?",
     "Tools" : "Various tools, and multiple tool benches.",
-    "Gas Cans" : "2 x Five Gallon gas cans, completely full.",
+    "Gas Cans" : "2 x Five Gallon gas cans, completely full. A zippo lighter lies beside them.",
     "Note" : "To Whom it may concern.\n"
              "If you are reading this note, I can assume I have died or become incapacitated in some way\n"
              "before I had the courage to complete my final mission. You will find about 10 gallons of gas\n"
@@ -33,8 +33,8 @@ def searchCabin(characterData):
         print("Room Name : " + roomName)
         match roomName:
             case "Cabin":
-                print("The Kitchen is mostly bar, with a smattering of cans, pans, and empty boxes.")
-                print("The only human touch is a drawing on the fridge.")
+                print("The cabin is a one room affair. A small kitchen, a bed, and nothing else.")
+                print("Even more spartan and bare then the apartment. He really was a no frills guy.")
             case "Shed":
                 print("A shed with tools and a few gas cans on the ground.")
             case "Septic Tank":
@@ -50,13 +50,22 @@ def choiceMenu(characterData, room):
     print("Choices")
     formatter.drawMenuLine()
     print("1. Move to another room")
-    print("2. Inspect this room")
-    print("3. Actions in room")
+    if "Inspect" not in room.keys():
+        print("X. Nothing to inspect in this room.")
+    else:
+        print("2. Inspect this room")
+    if "Actions" in room.keys():
+        if not room["Actions"]:
+            del room["Actions"]
+    if "Actions" not in room.keys():
+        print("X. No actions in room")
+    else:
+        print("3. Actions in room")
     print("4. Get Current Time")
     print("5. Check Character Sheet")
     print("6. Quit (Progress saved at start of scene)")
     menuInput = input("Please select your answer...\n")
-    try:
+    if menuInput.isnumeric():
         menuNumber = int(menuInput)
         formatter.clear()
         match menuNumber:
@@ -64,18 +73,19 @@ def choiceMenu(characterData, room):
                 roomName = buildingHelper.moveRoom(room)
                 room = cabin[roomName]
             case 2:
-                buildingHelper.inspectRoom(room, descriptionDictionary)
+                buildingHelper.inspectRoom(characterData,room, descriptionDictionary)
             case 3:
                 characterData = buildingHelper.actionsInRoom(room, characterData, 4)
             case 4:
                 timeHelper.showTime(characterData)
-                input("Press any key to continue...")
+                input("Press enter to continue...")
             case 5:
-                loadedCharacter = CharacterHelper.getCharacterMenu()
-                CharacterHelper.checkCharacterMenu(loadedCharacter)
+                CharacterHelper.checkCharacterMenu(characterData)
             case 6:
                 quit()
-    except TypeError:
+            case _:
+                input("Invalid Input. Press anything to try again...")
+    else:
         input("Invalid Input. Press anything to try again...")
     result = [characterData, room]
     return result

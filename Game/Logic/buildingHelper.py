@@ -16,10 +16,10 @@ def moveRoom(room):
             index = int(roomInput) - 1
 
     print("Moving to " + room["Rooms"][index])
-    input("Press any key to move...\n")
+    input("Press enter to move...\n")
     return room["Rooms"][index]
 
-def inspectRoom(room,descriptionDictionary):
+def inspectRoom(characterData,room,descriptionDictionary):
     while 1:
         formatter.clear()
         n = 1
@@ -36,13 +36,17 @@ def inspectRoom(room,descriptionDictionary):
             check = inspectInput.isnumeric()
             if check:
                 if int(inspectInput) == n:
-                    return
+                    return characterData
                 else:
                     index = int(inspectInput) - 1
                     objectName = room["Inspect"][index]
                     formatter.drawMenuLine()
                     print(descriptionDictionary[objectName])
-                    input("Press any key to continue...\n")
+                    if objectName == "Bed":
+                        room["Inspect"].append("Note")
+                    if objectName == "Note":
+                        characterData["Investigation Log"]["Cabin"].append("Read Clyde's Note.")
+                    input("Press enter to continue...\n")
             else:
                 input("Invalid Input. Press anything to try again...")
 
@@ -71,8 +75,10 @@ def actionsInRoom(room, characterData, nextScene):
                     objectName = room["Actions"][index]
                     formatter.drawMenuLine()
                     actions.serveAction(objectName, characterData)
-                    input("Press any key to continue...\n")
+                    input("Press enter to continue...\n")
             else:
                 input("Invalid Input. Press anything to try again...")
+        if "Actions" not in room.keys():
+            return characterData
         if characterData["Next Scene"] == nextScene:
             return characterData

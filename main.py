@@ -11,7 +11,7 @@ formatter.drawMenuLine()
 print("Welcome to your first assignment for the shadowy side of the government!")
 print("You will take on the role of an FBI agent tasked with cleaning up after a dead IRS officer.")
 print("What starts as a routine sweep will lead down a path where there is no return.")
-input("Press any key to continue...\n")
+input("Press enter to continue...\n")
 while 1:
     formatter.clear()
     formatter.drawMenuLine()
@@ -22,7 +22,7 @@ while 1:
     print("3. Check Character Sheet")
     print("4. Quit")
     menuInput = input("Please select your answer...\n")
-    try:
+    if menuInput.isnumeric():
         menuNumber = int(menuInput)
         formatter.clear()
         match menuNumber:
@@ -31,11 +31,15 @@ while 1:
                 Game.game.startGame(newCharacterData)
             case 2:
                 loadedCharacter = CharacterHelper.getCharacterMenu()
-                Game.game.startGame(loadedCharacter)
+                if loadedCharacter is not None:
+                    Game.game.startGame(loadedCharacter)
             case 3:
                 loadedCharacter = CharacterHelper.getCharacterMenu()
-                CharacterHelper.checkCharacterMenu(loadedCharacter)
+                if loadedCharacter is not None:
+                    CharacterHelper.checkCharacterMenu(loadedCharacter)
             case 4:
                 quit()
-    except TypeError:
+            case _:
+                input("Invalid Input. Press anything to try again...")
+    else:
         input("Invalid Input. Press anything to try again...")

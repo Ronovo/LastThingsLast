@@ -72,10 +72,13 @@ def choiceMenu(characterData, room):
         print("Choices")
         formatter.drawMenuLine()
         print("1. Move to another room")
-        if "Inspect" not in room.keys():
-            print("X. Nothing to inspect in this room.")
-        else:
+        if "Inspect" in room.keys():
             print("2. Inspect this room")
+        else:
+            print("X. Nothing to inspect in this room.")
+        if "Actions" in room.keys():
+            if not room["Actions"]:
+                del room["Actions"]
         if "Actions" not in room.keys():
             print("X. No actions in room")
         else:
@@ -84,7 +87,7 @@ def choiceMenu(characterData, room):
         print("5. Check Character Sheet")
         print("6. Quit (Progress saved at start of scene)")
         menuInput = input("Please select your answer...\n")
-        try:
+        if menuInput.isnumeric():
             menuNumber = int(menuInput)
             formatter.clear()
             match menuNumber:
@@ -92,18 +95,19 @@ def choiceMenu(characterData, room):
                     roomName = buildingHelper.moveRoom(room)
                     room = apartment[roomName]
                 case 2:
-                    buildingHelper.inspectRoom(room, descriptionDictionary)
+                    characterData = buildingHelper.inspectRoom(characterData,room, descriptionDictionary)
                 case 3:
                     characterData = buildingHelper.actionsInRoom(room, characterData, 3)
                 case 4:
                     timeHelper.showTime(characterData)
-                    input("Press any key to continue...")
+                    input("Press enter to continue...")
                 case 5:
-                    loadedCharacter = CharacterHelper.getCharacterMenu()
-                    CharacterHelper.checkCharacterMenu(loadedCharacter)
+                    CharacterHelper.checkCharacterMenu(characterData)
                 case 6:
                     quit()
-        except TypeError:
+                case _:
+                    input("Invalid Input. Press anything to try again...")
+        else:
             input("Invalid Input. Press anything to try again...")
         result = [characterData, room]
         return result
@@ -111,7 +115,7 @@ def choiceMenu(characterData, room):
 
 def oldLadyBedroom(characterData):
     print("As you are tearing apart the room, you hear a knock at the door. When the knocked stops, you hear a *yip*.")
-    checkInput = input("Press 1 to check the door. Press anything else to ignore.\n")
+    checkInput = input("Press 1 to check the door. Press enter to ignore her.\n")
     check = checkInput.isnumeric()
     if check:
         if int(checkInput) == 1:
@@ -120,27 +124,27 @@ def oldLadyBedroom(characterData):
             print("'Ohhh, you are so polite. I'm Ms. Clark. I live down below. I heard noises in Clyde's room.'")
             print("'It is just tragic what happened to him. Did you know him?")
             print("'Yes, ma'am. He was my superior. I hope Cassie is doing ok.'")
-            input("Press any key to see if she is suspicious of you...\n")
+            input("Press enter to see if she is suspicious of you...\n")
             persuadeCheck = handler.persuadeRoll(characterData)
             if persuadeCheck:
                 print("'Oh dear. Poor baby. Have you heard from the family?")
                 print("'I hear they are coming into town soon. They have been very private, with the loss and everything.'")
                 print("She seems satisfied with this response. 'Well, if you need anything from me, I'm below.'")
                 print("She shuffles away to let the demon she is carrying go to the bathroom outside.")
-                input("Press any key to close the door...\n")
+                input("Press enter to close the door...\n")
             else:
                 print("She thinks you are being a little too nice. Maybe a little transparent.")
                 print("You know exactly what this nosy old lady is going to say before she says it.")
                 print("Ummm...I hate to be a worrywart, but can I see your ID?")
                 print("You hand it to her")
-                input("Press any key to see if she can see through your ID...\n")
+                input("Press enter to see if she can see through your ID...\n")
                 n = handler.roll(100)
                 if n <= 80:
                     print("She seems to take forever to eyeball your ID, but she hands it back, seemingly satisfied.")
                     print("'Well, if you need anything, I will be downstair, dearie.' ")
                     print("She seems to give you a side eye as she walks away")
                     print("Hopefully, she doesn't become your next mission...")
-                    input("Press any key to close the door...\n")
+                    input("Press enter to close the door...\n")
                 else:
                     print("She doesn't seem satisfied with your ID.")
                     print("'I have seen Clyde's badge before...and my memory is good...'")
@@ -148,9 +152,9 @@ def oldLadyBedroom(characterData):
                     print("You give a hardy chuckle. 'That's because Clyde was a dinosaur!'")
                     print("Ms. Clark gives you a disapproving look as she clutches her dog and walks away.")
                     print("Young whippersnappers these days...they have no respect...")
-                    input("Press any key to shake your head and close the door...\n")
+                    input("Press enter to shake your head and close the door...\n")
         else:
-            print("DEBUG : Old Lady Ignored.")
+            print("Your mission orders were to not involve anyone in the mission. You did the right thing. Or did you?")
     else:
-        print("DEBUG : Old Lady Ignored")
+        print("Your mission orders were to not involve anyone in the mission. You did the right thing. Or did you?")
     return characterData

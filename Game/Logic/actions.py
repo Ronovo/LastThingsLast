@@ -1,8 +1,8 @@
 import random
 
 import formatter
-from Game.Logic import timeHelper
-from Game.Scenes import apartment
+from Game.Logic import timeHelper, handler
+from Game.Scenes import apartment, cabin
 
 
 def roll(number):
@@ -27,11 +27,22 @@ def serveAction(name, characterData):
             characterData = searchBoxes(characterData)
         case "Open Box":
             characterData = openBox(characterData)
-        case "Open Tank":
+        case "Approach Tank":
             characterData = openTank(characterData)
     return characterData
 
 def checkCouch(characterData):
+    characterData["Investigation Log"]["Apartment"].append("Checked Couch")
+    actions = apartment.apartment["Living Room"]["Actions"]
+    z = 0
+    for x in actions:
+        if x == "Check Couch":
+            break
+        else:
+            z += 1
+    del actions[z]
+    apartment.apartment["Living Room"]["Actions"] = actions
+
     #Luck Roll
     couch = roll(100)
     if 1 <= couch < 26 :
@@ -55,6 +66,18 @@ def eatDonuts(characterData):
     check = donutInput.isnumeric()
     if check:
         if int(donutInput) == 1:
+            #Clear the action first
+            characterData["Investigation Log"]["Apartment"].append("Ate Donuts")
+            actions = apartment.apartment["Living Room"]["Actions"]
+            z = 0
+            for x in actions:
+                if x == "Eat Donuts":
+                    break
+                else:
+                    z += 1
+            del actions[z]
+            apartment.apartment["Living Room"]["Actions"] = actions
+
             conCheck = roll(100)
             if conCheck < characterData["BaseStats"]["Con"]:
                 print("You are lucky, and don't feel any effects.")
@@ -68,7 +91,17 @@ def eatDonuts(characterData):
         return characterData
 
 def magazines(characterData):
-    input("Press any key to do a search check...\n")
+    characterData["Investigation Log"]["Apartment"].append("Searched Magazines")
+    actions = apartment.apartment["Living Room"]["Actions"]
+    z = 0
+    for x in actions:
+        if x == "Search Magazines":
+            break
+        else:
+            z += 1
+    del actions[z]
+    apartment.apartment["Living Room"]["Actions"] = actions
+    input("Press enter to do a search check...\n")
     searchCheck = roll(100)
     if searchCheck <= characterData["Skills"]["Search"]:
         print("This man is meticulous, but on a crossword puzzle, you find an underlined word")
@@ -86,6 +119,9 @@ def magazines(characterData):
     return characterData
 
 def searchCloset(characterData):
+    characterData["Investigation Log"]["Apartment"].append("Searched Closet")
+    del apartment.apartment["Linen Closet"]["Actions"]
+
     searchCheck = roll(100)
     if searchCheck <= characterData["Skills"]["Search"]:
         print("You find a key with a green triangle tag on it.")
@@ -116,6 +152,8 @@ def tossBedroom(characterData):
     check = bedroomInput.isnumeric()
     if check:
         if int(bedroomInput) == 1:
+            characterData["Investigation Log"]["Apartment"].append("Tossed Bedroom; Found Bag of Remains")
+            del apartment.apartment["Main Bedroom"]["Actions"]
             # roll search -20 (easier) - success - bag of teeth - occult roll - unnatural + 1
             '''
             searchCheck = roll(100)
@@ -136,7 +174,7 @@ def tossBedroom(characterData):
             item = characterData["Armor/Gear"][a]
             print(item + " added to inventory.")
 
-            input("Press any key to continue...")
+            input("Press enter to continue...")
             # add hour to time
             luckCheck = roll(100)
             if luckCheck < 51:
@@ -146,11 +184,12 @@ def tossBedroom(characterData):
                 print(
                     "Unluckily, it takes you longer to put the bedroom back together. You spend 2 hours instead of 1.")
                 characterData = timeHelper.subtractTime(characterData, 2)
-            input("Press any key to continue...")
+            input("Press enter to continue...")
 
             # Stealth Roll - if fail, trigger Janowitz
             stealthCheck = roll(100)
             if stealthCheck > characterData["Skills"]["Stealth"]:
+                characterData["Investigation Log"]["Apartment"].append("Ms. Clark(Clyde Neighbor) Alerted")
                 formatter.clear()
                 characterData = apartment.oldLadyBedroom(characterData)
                 formatter.clear()
@@ -163,6 +202,7 @@ def tossBedroom(characterData):
     return characterData
 
 def searchBoxes(characterData):
+    characterData["Investigation Log"]["Apartment"].append("Searched Boxes")
     print("You are about to search through boxes. This will take some time.")
     while 1:
         print("Options:")
@@ -187,6 +227,11 @@ def searchBoxes(characterData):
                     characterData["Time Until Sleep"] = 12
                     print("Time to wake up!")
                     input("Press any button to check the time!\n")
+                    timeHelper.showTime(characterData)
+                    input("Press enter to finsh the work...\n")
+                    print("You go back and finish looking through the boxes.")
+                    sleepNumber = 6
+                    characterData = timeHelper.subtractTime(characterData, sleepNumber)
                     break
                 case 2:
                     print("You start working on the boxes.")
@@ -195,17 +240,15 @@ def searchBoxes(characterData):
                     print("You stop working. Looking around, you think you still have " + str(timeleft) + " hours of work left.")
                     print("You crash at the hotel, and sleep for 10 hours, due to how exhausted you are.")
                     characterData["Time Until Sleep"] = 12
-                    input("Press any key to check the time...\n")
+                    input("Press enter to check the time...\n")
                     timeHelper.showTime(characterData)
-                    input("Press any key to go back and finish the job...\n")
+                    input("Press enter to go back and finish the job...\n")
                     characterData = timeHelper.subtractTime(characterData,timeleft)
                     break
     timeHelper.showTime(characterData)
-    input("Press any key to continue...")
-    print(
-        "You find papers that show that Clyde had a cabin. They were hidden behind the stacks of paper boxes, in an old shoe box.")
-    print(
-        "Cash receipts, notebook to track payments, coordinates. Remembering the key board by the door, you go and look again.")
+    input("Press enter to continue...")
+    print("You find papers that show that Clyde had a cabin. They were hidden behind the stacks of paper boxes, in an old shoe box.")
+    print("Cash receipts, notebook to track payments, coordinates. Remembering the key board by the door, you go and look again.")
     print("You find a house key that looks different from the apartment key.")
     print("You hope this is the cabin key. If not, you might have to use your lockpick training.")
     characterData["Next Scene"] = 3
@@ -213,9 +256,35 @@ def searchBoxes(characterData):
     return characterData
 
 def openBox(characterData):
-    print("DEBUG : CHECK KEY OR LOCKPICK")
-    print("DEBUG : BOX OPEN")
-    print("DEBUG : BOX CONTENTS GO HERE")
+    characterData["Investigation Log"]["Cabin"].append("Searched Closet")
+    box = ["Reel to Reel", "Sky Devils Book", "Manilla Folder", "Knife"]
+    x = roll(3)
+    item = box[x]
+    key = checkForKey(characterData)
+    if key:
+        print("You open the box with the key.")
+        print("You found a " + item)
+        room = cabin.cabin["Cabin"]
+        del room["Actions"]
+        cabin.cabin["Cabin"] = room
+        input("Press enter to put it in your inventory...\n")
+    else :
+        x = 3
+        while x > 0:
+            print("You have " + str(x) + "chances remaining to pick the lock.")
+            input("Press enter to pick the lock.")
+            x -= 1
+            lockpickCheck = handler.lockpicking(characterData)
+            if lockpickCheck:
+                print("You break it open with your picking skills!")
+                print("You found a " + item)
+                room = cabin.cabin["Cabin"]
+                del room["Actions"]
+                cabin.cabin["Cabin"] = room
+                input("Press enter to put it in your inventory...\n")
+                break
+            if x == 0:
+                print("You failed to pick the lock.")
     return characterData
 
 def openTank(characterData):
@@ -223,5 +292,16 @@ def openTank(characterData):
     print("'please......help me........'")
     print("The ghostly wails let loos again as you confirm it came from inside.")
     print("'please.....you have to help me...he has trapped me down here......'")
+    room = cabin.cabin["Septic Tank"]
+    del room["Actions"]
+    cabin.cabin["Septic Tank"] = room
     characterData["Current Scene"] = 4
     return characterData
+#-----------------
+#HELPER METHODS
+#-----------------
+def checkForKey(characterData):
+    for x in characterData["Armor/Gear"]:
+        if x == "Triangle Key":
+            return True
+    return False

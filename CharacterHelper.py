@@ -3,6 +3,33 @@ import os
 
 import formatter
 
+
+def printInvestigationLog(character):
+    log = character["Investigation Log"]
+    formatter.drawMenuLine()
+    print("Investigation Log")
+    formatter.drawMenuLine()
+    formatter.drawMenuLine()
+    print("Apartment")
+    formatter.drawMenuLine()
+    for x in log["Apartment"]:
+        print("-" + x)
+    if "Cabin" in log.keys():
+        if log["Cabin"] is not None:
+            formatter.drawMenuLine()
+            print("Cabin")
+            formatter.drawMenuLine()
+            for x in log["Cabin"]:
+                print("-" + x)
+    if "Encounter" in log.keys():
+        if log["Encounter"] is not None:
+            formatter.drawMenuLine()
+            print("Encounter")
+            formatter.drawMenuLine()
+            for x in log["Encounter"]:
+                print("-" + x)
+
+
 def checkCharacterMenu(character):
     while 1:
         formatter.clear()
@@ -13,9 +40,10 @@ def checkCharacterMenu(character):
         print("2. Base/Derived Stats")
         print("3. Skills")
         print("4. Additional Information")
-        print("5. Quit")
+        print("5. Investigation Log")
+        print("6. Quit")
         characterInput = input("Please select your answer...\n")
-        try:
+        if characterInput.isnumeric():
             formatter.clear()
             menuNumber = int(characterInput)
             match menuNumber:
@@ -63,52 +91,34 @@ def checkCharacterMenu(character):
                     formatter.drawMenuLine()
                     print("SKILLS")
                     formatter.drawMenuLine()
-                    print("Accounting : " + str(character['Skills']['Accounting']))
-                    print("Alertness : " + str(character['Skills']['Alertness']))
-                    print("Anthropology : " + str(character['Skills']['Anthropology']))
-                    print("Archaeology : " + str(character['Skills']['Archaeology']))
+                    print("Accounting : " + str(character['Skills']['Accounting']) + " | Alertness : " + str(character['Skills']['Alertness']))
+                    print("Anthropology : " + str(character['Skills']['Anthropology']) + " | Archaeology : " + str(character['Skills']['Archaeology']))
                     for key in character['Skills']['Art']:
                         print("Art (" + key + "): " + str(character['Skills']['Art'][key]))
-                    print("Artillery : " + str(character['Skills']['Artillery']))
-                    print("Athletics : " + str(character['Skills']['Athletics']))
-                    print("Bureaucracy : " + str(character['Skills']['Bureaucracy']))
-                    print("Computer Science : " + str(character['Skills']['Computer Science']))
+                    print("Artillery : " + str(character['Skills']['Artillery']) + " | Athletics : " + str(character['Skills']['Athletics']))
+                    print("Bureaucracy : " + str(character['Skills']['Bureaucracy']) + " | Computer Science : " + str(character['Skills']['Computer Science']))
                     for key in character['Skills']['Craft'].keys():
                         print("Craft (" + key + "): " + str(character['Skills']['Craft'][key]))
-                    print("Criminology : " + str(character['Skills']['Criminology']))
-                    print("Demolitions : " + str(character['Skills']['Demolitions']))
-                    print("Disguise : " + str(character['Skills']['Disguise']))
-                    print("Dodge : " + str(character['Skills']['Dodge']))
-                    print("Drive : " + str(character['Skills']['Drive']))
-                    print("Firearms : " + str(character['Skills']['Firearms']))
-                    print("First Aid : " + str(character['Skills']['First Aid']))
-                    print("Forensics : " + str(character['Skills']['Forensics']))
-                    print("Heavy Machinery : " + str(character['Skills']['Heavy Machinery']))
-                    print("Heavy Weapons : " + str(character['Skills']['Heavy Weapons']))
-                    print("History : " + str(character['Skills']['History']))
-                    print("HUMINT : " + str(character['Skills']['HUMINT']))
-                    print("Law : " + str(character['Skills']['Law']))
-                    print("Medicine : " + str(character['Skills']['Medicine']))
+                    print("Criminology : " + str(character['Skills']['Criminology']) + " | Demolitions : " + str(character['Skills']['Demolitions']))
+                    print("Disguise : " + str(character['Skills']['Disguise']) + "| Dodge : " + str(character['Skills']['Dodge']))
+                    print("Drive : " + str(character['Skills']['Drive']) + " | Firearms : " + str(character['Skills']['Firearms']))
+                    print("First Aid : " + str(character['Skills']['First Aid']) + "| Forensics : " + str(character['Skills']['Forensics']))
+                    print("Heavy Machinery : " + str(character['Skills']['Heavy Machinery']) + " | Heavy Weapons : " + str(character['Skills']['Heavy Weapons']))
+                    print("History : " + str(character['Skills']['History']) + " | HUMINT : " + str(character['Skills']['HUMINT']))
+                    print("Law : " + str(character['Skills']['Law']) + " | Medicine : " + str(character['Skills']['Medicine']))
                     print("Melee Weapons : " + str(character['Skills']['Melee Weapons']))
                     for key in character['Skills']['Military Science']:
                         print("Military Science (" + key + "): " + str(character['Skills']['Military Science'][key]))
-                    print("Navigate : " + str(character['Skills']['Navigate']))
-                    print("Occult : " + str(character['Skills']['Occult']))
-                    print("Persuade : " + str(character['Skills']['Persuade']))
-                    print("Pharmacy : " + str(character['Skills']['Pharmacy']))
-                    print("Pilot : " + str(character['Skills']['Pilot']))
-                    print("Psychotherapy : " + str(character['Skills']['Psychotherapy']))
+                    print("Navigate : " + str(character['Skills']['Navigate']) + " | Occult : " + str(character['Skills']['Occult']))
+                    print("Persuade : " + str(character['Skills']['Persuade']) + " | Pharmacy : " + str(character['Skills']['Pharmacy']))
+                    print("Pilot : " + str(character['Skills']['Pilot']) + " | Psychotherapy : " + str(character['Skills']['Psychotherapy']))
                     print("Ride : " + str(character['Skills']['Ride']))
                     for key in character['Skills']['Science']:
                         print("Science (" + key + "): " + str(character['Skills']['Science'][key]))
-                    print("Search : " + str(character['Skills']['Search']))
-                    print("SIGINT : " + str(character['Skills']['SIGINT']))
-                    print("Stealth : " + str(character['Skills']['Stealth']))
-                    print("Surgery : " + str(character['Skills']['Surgery']))
-                    print("Survival : " + str(character['Skills']['Survival']))
-                    print("Swim : " + str(character['Skills']['Swim']))
-                    print("Unarmed Combat : " + str(character['Skills']['Unarmed Combat']))
-                    print("Unnatural : " + str(character['Skills']['Unnatural']))
+                    print("Search : " + str(character['Skills']['Search']) + " | SIGINT : " + str(character['Skills']['SIGINT']))
+                    print("Stealth : " + str(character['Skills']['Stealth']) + " | Surgery : " + str(character['Skills']['Surgery']))
+                    print("Survival : " + str(character['Skills']['Survival']) + " | Swim : " + str(character['Skills']['Swim']))
+                    print("Unarmed Combat : " + str(character['Skills']['Unarmed Combat']) + " | Unnatural : " + str(character['Skills']['Unnatural']))
                     for key in character['Skills']['Language']:
                         print("Language (" + key + "): " + str(character['Skills']['Language'][key]))
                 case 4:
@@ -135,11 +145,16 @@ def checkCharacterMenu(character):
                     trainingString = trainingString[:-1]
                     print(trainingString)
                 case 5:
+                    printInvestigationLog(character)
+                case 6:
                     return
-            input("Press any Key To Continue...")
-
-        except TypeError:
+                case _:
+                    print("Invalid Input.")
+            input("Press enter To Continue...\n")
+        else:
             input("Invalid Input. Press anything to try again...")
+
+
 
 
 def createNewCharacter():
@@ -186,20 +201,26 @@ def getCharacterMenu():
         file = file[0:cutoff]
         fileList.append(file)
     # Menu
-    print("Character Menu")
-    print("--------------")
-    n = 1
-    for option in fileList:
-        print(str(n) + ".) " + option)
-        n += 1
-    print(str(n) + ".) Return to Main Menu\n")
-    answer = input("Please choose an option\n")
-    if int(answer) == n:
-        return
-    else:
-        fileIndex = int(answer) - 1
-        grabFile = fileList[fileIndex]
-        newPath = path + '/' + grabFile + '.json'
-        with open(newPath, mode="r", encoding="utf-8") as read_file:
-            newCharacterData = json.load(read_file)
-            return newCharacterData
+    while 1:
+        print("Character Menu")
+        print("--------------")
+        n = 1
+        for option in fileList:
+            print(str(n) + ".) " + option)
+            n += 1
+        print(str(n) + ".) Return to Main Menu\n")
+        answer = input("Please choose an option\n")
+        if answer.isnumeric():
+            if int(answer) > n:
+                input("Invalid number. Try again.\n")
+            elif int(answer) == n:
+                return
+            else:
+                fileIndex = int(answer) - 1
+                grabFile = fileList[fileIndex]
+                newPath = path + '/' + grabFile + '.json'
+                with open(newPath, mode="r", encoding="utf-8") as read_file:
+                    newCharacterData = json.load(read_file)
+                    return newCharacterData
+        else:
+            input("Not a number. Try again...\n")

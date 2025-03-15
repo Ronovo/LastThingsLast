@@ -15,3 +15,13 @@ def persuadeRoll(characterData):
         return True
     else:
         return False
+
+def lockpicking(characterData):
+    check = roll(100)
+    print("DEBUG : Lockpick Roll : " + str(check))
+    dex = characterData["BaseStats"]["Dex"] * 5
+    if check < dex:
+        return True
+    else:
+        return False
+

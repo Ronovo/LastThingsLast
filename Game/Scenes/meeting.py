@@ -51,7 +51,7 @@ def objectives(characterData):
                     return characterData
                 case _:
                     print("Invalid option! Please try again.")
-            input("Press any key to continue...\n")
+            input("Press enter to continue...\n")
 
 
 
@@ -66,20 +66,20 @@ def briefing(characterData):
     print("A man walks into the room, and stands across from you. 'Thank you for showing up on short notice.'")
     print("'Most task force meetings we have are very high priorty, and short notice, so you better get used to it.'")
     print("'I am Agent Hands. You can call me that, or Mr. Hands. And you are?'")
-    input("Press any key to say your name...\n")
+    input("Press enter to say your name...\n")
 
     print("'I'm " + characterData['Agent Name'] + "' you respond. You assume he already knows your real name.")
     print("After all, you are off work today because someone submitted time off requests in your name.")
     print("Time off you were not aware of...")
     print("'It's nice to meet you, " + characterData['Agent Name'] + ". Let's get down to business...'")
-    input("Press any key to get your assignment...\n")
+    input("Press enter to get your assignment...\n")
 
     print("'You are here to do some clean-up on a former Associate. Clyde Baughman. Died of natural causes. As far as we know.")
     print("We are not concerned with how he died. All we are concerned about is any information that leads back to us.")
     print("He was active years ago, and when he was decommissioned from the Program, We did an initial security check.")
     print("Nothing was found then, but it never hurts do trust, but verify, right?'")
     print("He hands you a paper handout with information on it")
-    input("Press any key to get more information...")
+    input("Press enter to get more information...")
 
     formatter.clear()
     objectives(characterData)
@@ -88,7 +88,7 @@ def briefing(characterData):
     print("in Iowa City was not on the list of things you planned on doing with your weekend.")
     print("But, you have a job to do. You press the unlock button on the key fob.")
     print("The lights blink, the horn honks, and your chariot, a 2008 Black Toyota Camry, awaits.")
-    input("Press any key to get in the car and drive...")
+    input("Press enter to get in the car and drive...")
 
     #Scene Change Logic Here
     characterData["Current Scene"] = 99

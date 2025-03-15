@@ -1,4 +1,5 @@
 import formatter
+import CharacterHelper
 from Game.Logic import timeHelper, handler
 from Game.Scenes import meeting
 
@@ -21,7 +22,7 @@ def inBetweenMenu(characterData):
             match menuNumber:
                 case 1:
                     timeHelper.showTime(characterData)
-                    input("Press any key to continue...\n")
+                    input("Press enter to continue...\n")
                 case 2:
                     characterData = hotel(characterData)
                 case 3:
@@ -70,11 +71,11 @@ def sleep(characterData):
                     return characterData
                 case _:
                     print("Not a valid option. Please try again!")
-                    input("Press any key to try again...")
+                    input("Press enter to try again...")
     characterData = timeHelper.subtractTime(characterData, sleepNumber)
     characterData["Time Until Sleep"] = 12
     timeHelper.showTime(characterData)
-    input("Press any key to continue...")
+    input("Press enter to continue...")
     return characterData
 
 def hotel(characterData):
@@ -84,8 +85,10 @@ def hotel(characterData):
         print("Welcome to the hotel.")
         formatter.drawMenuLine()
         print("1. Check Mission Information")
-        print("2. Sleep")
-        print("3. Return to last scene")
+        print("2. Check Investigation Log")
+        print("3. Check Character Sheet")
+        print("4. Sleep")
+        print("5. Return to last scene")
         menuInput = input("Please select your answer...\n")
         if menuInput.isnumeric():
             menuNumber = int(menuInput)
@@ -94,8 +97,14 @@ def hotel(characterData):
                 case 1:
                    characterData = meeting.objectives(characterData)
                 case 2:
-                    characterData = sleep(characterData)
+                    formatter.clear()
+                    CharacterHelper.printInvestigationLog(characterData)
+                    input("Press enter to continue...")
                 case 3:
+                    CharacterHelper.checkCharacterMenu(characterData)
+                case 4:
+                    characterData = sleep(characterData)
+                case 5:
                     return characterData
                 case _:
                     print("Not a valid option. Please try again!")

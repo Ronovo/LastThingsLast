@@ -13,7 +13,7 @@ def scene1(characterData):
         timeHelper.subtractTime(characterData, 1)
         print("Unfortunately, someone left the lights on.")
         print("It takes an hour for you to get it running, after getting a jump off a mail truck.")
-        input("Press any key to continue...")
+        input("Press enter to continue...")
     return characterData
 
 def scene2(characterData):
@@ -29,7 +29,7 @@ def scene2(characterData):
     print("No one takes notice of a lone agent entering the building.")
     #TODO DM NOTE Roll for chance door is unlocked already.
     print("You also have a key, so you are not suspicious. At least, not yet.")
-    input("Press any key to enter the apartment...\n")
+    input("Press enter to enter the apartment...\n")
 
     #TODO Dev Note Add logic to build a building, and have the player explore
     print("The interior of Baughman's small apartment is spartan and grim.")
@@ -41,15 +41,19 @@ def scene2(characterData):
 def scene3(characterData):
     print("You take the key you found at the apartment, and coordinates to the cabin.")
     print("It takes 3 hours to drive there.")
-    print("DEBUG: No Time Changes Programmed Yet")
+    timeHelper.showTime(characterData)
+    input("Press enter to continue...")
     print("You pull up to the front of the cabin. It looks abandoned.")
-    input("Press any key to continue...")
+    print("It is one story, constructed of faux wood. It is powered by a gas generator outside.")
+    print("It looks to be one room by the size of it. Very small.")
+    input("Press enter to continue...")
 
     characterData = cabin.searchCabin(characterData)
     return characterData
 
 
 def scene4(characterData):
+    characterData["Investigation Log"]["Septic Tank"] = []
     characterData = encounter.startEncounter(characterData)
     return characterData
 
@@ -59,7 +63,7 @@ def endGame(characterData):
     print("Thank you for playing. More to come soon.")
     print("Report any bugs or typos you found back to Ronovo!")
     print("***Have a Spooky Day***")
-    input("Press any key to exit...")
+    input("Press enter to exit...")
     return
 
 
@@ -76,6 +80,7 @@ def startGame(characterData):
                 characterData = scene2(characterData)
             #Cabin
             case 3:
+                characterData["Investigation Log"]["Cabin"] = []
                 characterData = scene3(characterData)
             # Encounter
             case 4:

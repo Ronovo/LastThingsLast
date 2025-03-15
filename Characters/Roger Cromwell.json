@@ -1,10 +1,11 @@
 {
-  "Current Scene": 2,
+  "Current Scene": 0,
   "Next Scene": 99,
-  "Hours Left": 48,
+  "Hours Left": 34,
   "Cash": 0.0,
-  "Real Name": "Roger Cornwell",
-  "Agent Name": "Agent Winters",
+  "Time Until Sleep": 10,
+  "Real Name": "Roger Cromwell",
+  "Agent Name": "Agent 69",
   "Profession": "Special Agent",
   "Employer": "FBI",
   "Nationality": "U.S.",
@@ -14,7 +15,7 @@
     "Master's Degree in Behavioral Psychology",
     "FBI Training"
   ],
-  "Physical Description": "6'3, Scar on back of left hand, cold eyes",
+  "Physical Description": "5'6\", Cold eyes",
   "Motivations": [
     "Figuring People Out",
     "Protecting the American People",
@@ -38,9 +39,9 @@
     "Cha": 12
   },
   "DerivedStats": {
-    "HP": 12,
-    "WP": 13,
-    "San": 60,
+    "HP": 11,
+    "WP": 10,
+    "San": 69,
     "BP": 52
   },
   "Skills": {
@@ -99,7 +100,8 @@
     "Burner Phone",
     "IRS Badge",
     "Car Keys",
-    "Apartment Key"
+    "Apartment Key",
+    "Bag of Remains"
   ],
   "Weapons": [
     "9mm Pistol",
@@ -110,5 +112,22 @@
   "Home Developments": [],
   "Special Training": [
     "Lockpicking"
-  ]
+  ],
+  "Investigation Log": {
+    "Apartment": [
+      "Checked Couch",
+      "Ate Donuts",
+      "Searched Magazines",
+      "Searched Closet",
+      "Tossed Bedroom; Found Bag of Remains",
+      "Ms. Clark(Clyde Neighbor) Alerted",
+      "Searched Boxes"
+    ],
+    "Cabin": [
+      "Read Clyde's Note."
+    ],
+    "Septic Tank": [
+      "Decided to burn the thing in the tank."
+    ]
+  }
 }

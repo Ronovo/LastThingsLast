@@ -86,6 +86,9 @@
     "Weapons" : ["9mm Pistol",".38 revolver","Unarmed"],
     "Personal Details" : "Joined the FBI after years of psych training and research. Became one of the best FBI Interrogators.\n Joined what covered as a counterterrorism task force, after some undercover work with a Far Right Militia Group with Occult Ties.\n",
     "Home Developments" : [],
-    "Special Training" : ["Lockpicking"]
+    "Special Training" : ["Lockpicking"],
+    "Investigation Log" : {
+      "Apartment" : []
+    }
   }
 }
