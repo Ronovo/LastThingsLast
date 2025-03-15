@@ -34,7 +34,11 @@ jobs:
 
       - name: Rename Executable
         run: |
-          mv dist/main dist/game-${{ matrix.os }}-${{ github.ref_name }}
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            mv dist/main.exe dist/game-${{ matrix.os }}-${{ github.ref_name }}.exe
+          else
+            mv dist/main dist/game-${{ matrix.os }}-${{ github.ref_name }}
+          fi
         shell: bash
 
       - name: Upload Executable as Artifact
