@@ -39,33 +39,34 @@ jobs:
       - name: Create .dmg Installer (macOS)
         if: matrix.os == 'macos-latest'
         run: |
-          # Install create-dmg if not already installed
+           # Install create-dmg if not already installed
           brew install create-dmg
 
-          # Check if any .dmg file already exists, and delete it
-          echo "Removing any existing .dmg files to avoid confusion:"
-          rm -f dist/LastThingsLast-${{ github.ref_name }}.dmg
+          # Clean up previous dist folder contents (force rebuild)
+          echo "Cleaning up previous dist directory:"
+          rm -rf dist/*
 
-          # Check the contents of the dist folder to verify the .app exists
-          echo "Listing contents of dist directory:"
+          # Check the contents of the dist folder before build (should be empty or contain old files)
+          echo "Listing contents of dist directory before build:"
           ls -R dist
 
-          # Check file permissions for the .app (make sure it's accessible)
-          echo "Checking file permissions for the .app:"
-          ls -l dist/LastThingsLast.app
+          # Build the app again using pyinstaller (to ensure everything is rebuilt)
+          echo "Building the app with pyinstaller:"
+          pyinstaller --onefile --windowed --name "LastThingsLast" main.py
 
-          # Fix file permissions for the .app to ensure accessibility
-          echo "Fixing file permissions for LastThingsLast.app:"
+          # Check the contents of the dist directory after the build
+          echo "Listing contents of dist directory after build:"
+          ls -R dist
+
+          # Ensure all app contents have correct permissions (especially in the 'MacOS' and 'Resources' folders)
+          echo "Fixing file permissions inside the .app bundle:"
           chmod -R 755 dist/LastThingsLast.app
 
           # Check the permissions again after fixing
           echo "Checking file permissions after chmod:"
-          ls -l dist/LastThingsLast.app
+          ls -lR dist/LastThingsLast.app
 
-          # Create the directory explicitly for .dmg file
-          mkdir -p dist/dmg-output
-
-          #  Now run create-dmg and specify the output filename (absolute path)
+          # Now run create-dmg and specify the output filename (absolute path)
           echo "Creating .dmg file with create-dmg:"
           create-dmg 'dist/LastThingsLast.app' '/github/workspace/dist/dmg-output/LastThingsLast-${{ github.ref_name }}.dmg' \
             --dmg-title="LastThingsLast Installer" \
