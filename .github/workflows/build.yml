@@ -72,7 +72,8 @@ jobs:
 
           # Now run create-dmg and specify the output filename (absolute path)
           echo "Creating .dmg file with create-dmg:"
-          create-dmg 'dist/LastThingsLast.app' 'dist/dmg-output/LastThingsLast-${{ github.ref_name }}.dmg' \
+          create-dmg 'dist/LastThingsLast.app' \
+            "$(pwd)/dist/dmg-output/LastThingsLast-${{ github.ref_name }}.dmg" \
             --dmg-title="LastThingsLast Installer" \
             --overwrite || echo "create-dmg failed"
         shell: bash
