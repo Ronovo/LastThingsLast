@@ -39,7 +39,7 @@ jobs:
       - name: Create .dmg Installer (macOS)
         if: matrix.os == 'macos-latest'
         run: |
-           # Install create-dmg if not already installed
+          # Install create-dmg if not already installed
           brew install create-dmg
 
           # Clean up previous dist folder contents (force rebuild)
