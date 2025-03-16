@@ -66,6 +66,10 @@ jobs:
           echo "Creating dmg-output directory:"
           mkdir -p dist/dmg-output
 
+          # Check the contents of the dist directory after the build
+          echo "Listing contents of dist directory after build:"
+          ls -R dist
+
           # Now run create-dmg and specify the output filename (absolute path)
           echo "Creating .dmg file with create-dmg:"
           create-dmg 'dist/LastThingsLast.app' 'dist/dmg-output/LastThingsLast-${{ github.ref_name }}.dmg' \
