@@ -62,9 +62,9 @@ jobs:
           echo "Fixing file permissions inside the .app bundle:"
           chmod -R 755 dist/LastThingsLast.app
 
-          # Check the permissions again after fixing
-          echo "Checking file permissions after chmod:"
-          ls -lR dist/LastThingsLast.app
+          # Create the dmg-output directory if it doesn't exist
+          echo "Creating dmg-output directory:"
+          mkdir -p dist/dmg-output
 
           # Now run create-dmg and specify the output filename (absolute path)
           echo "Creating .dmg file with create-dmg:"
