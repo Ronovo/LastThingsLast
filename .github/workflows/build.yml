@@ -6,7 +6,7 @@ on:
       - "v*"
 
 permissions:
-  contents: write  # <-- Add this to allow release creation
+  contents: write
 
 jobs:
   build:
@@ -29,43 +29,37 @@ jobs:
 
       - name: Build Executable
         run: |
-          pyinstaller --onefile main.py
-        shell: bash
-
-      - name: Rename Executable
-        run: |
-          if [ "$RUNNER_OS" = "Windows" ]; then
-            mv dist/main.exe dist/game-${{ matrix.os }}-${{ github.ref_name }}.exe
+          if [ "$RUNNER_OS" = "macOS" ]; then
+            pyinstaller --onefile --windowed --name "LastThingsLast" main.py
           else
-            mv dist/main dist/game-${{ matrix.os }}-${{ github.ref_name }}
+            pyinstaller --onefile --name "LastThingsLast" main.py
           fi
         shell: bash
 
-      - name: List dist directory
-        run: ls -R dist
+      - name: Create .dmg Installer (macOS)
+        if: matrix.os == 'macos-latest'
+        run: |
+          brew install create-dmg
+          create-dmg 'dist/LastThingsLast.app' dist/ \
+            --dmg-title="LastThingsLast Installer" \
+            --overwrite
         shell: bash
 
-      - name: Upload Executable as Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: game-executable-${{ matrix.os }}
-          path: dist/game-${{ matrix.os }}-${{ github.ref_name }}*
-
-      - name: Create GitHub Release
-        id: create_release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ github.ref_name }}
-          name: Release ${{ github.ref_name }}
-          draft: false
-          prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Rename Executables
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            mv dist/LastThingsLast.exe dist/game-windows-${{ github.ref_name }}.exe
+          elif [ "$RUNNER_OS" = "macOS" ]; then
+            mv dist/LastThingsLast.dmg dist/game-macos-${{ github.ref_name }}.dmg
+          fi
+        shell: bash
 
       - name: Upload Executable to Release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref_name }}
-          files: dist/*
+          files: |
+            dist/game-windows-${{ github.ref_name }}.exe
+            dist/game-macos-${{ github.ref_name }}.dmg
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
