@@ -54,6 +54,14 @@ jobs:
           echo "Checking file permissions for the .app:"
           ls -l dist/LastThingsLast.app
 
+          # Fix file permissions for the .app to ensure accessibility
+          echo "Fixing file permissions for LastThingsLast.app:"
+          chmod -R 755 dist/LastThingsLast.app
+
+          # Check the permissions again after fixing
+          echo "Checking file permissions after chmod:"
+          ls -l dist/LastThingsLast.app
+
           # Create the directory explicitly for .dmg file
           mkdir -p dist/dmg-output
 
