@@ -40,9 +40,11 @@ jobs:
         if: matrix.os == 'macos-latest'
         run: |
           brew install create-dmg
-          create-dmg 'dist/LastThingsLast.app' dist/ \
+          create-dmg \
             --dmg-title="LastThingsLast Installer" \
-            --overwrite
+            --overwrite \
+            --output "dist/LastThingsLast.dmg" \
+            "dist/LastThingsLast.app"
         shell: bash
 
       - name: Rename Executables
