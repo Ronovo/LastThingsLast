@@ -46,10 +46,10 @@ jobs:
           echo "Listing contents of dist directory:"
           ls -R dist
 
-          # Run create-dmg and check output
-          create-dmg 'dist/LastThingsLast.app' 'dist/LastThingsLast.dmg' \
+          # Run create-dmg and specify the output filename correctly
+          create-dmg 'dist/LastThingsLast.app' 'dist/LastThingsLast-${{ github.ref_name }}.dmg' \
             --dmg-title="LastThingsLast Installer" \
-            --overwrite || echo "create-dmg failed"
+            --overwrite
 
         shell: bash
 
