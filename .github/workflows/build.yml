@@ -46,7 +46,7 @@ jobs:
           echo "Removing any existing .dmg files to avoid confusion:"
           rm -f dist/LastThingsLast-${{ github.ref_name }}.dmg
 
-          #    Check the contents of the dist folder to verify the .app exists
+          # Check the contents of the dist folder to verify the .app exists
           echo "Listing contents of dist directory:"
           ls -R dist
 
@@ -54,9 +54,12 @@ jobs:
           echo "Checking file permissions for the .app:"
           ls -l dist/LastThingsLast.app
 
-          # Now run create-dmg and specify the output filename
+          # Create the directory explicitly for .dmg file
+          mkdir -p dist/dmg-output
+
+          #  Now run create-dmg and specify the output filename (absolute path)
           echo "Creating .dmg file with create-dmg:"
-          create-dmg 'dist/LastThingsLast.app' 'dist/LastThingsLast-${{ github.ref_name }}.dmg' \
+          create-dmg 'dist/LastThingsLast.app' '/github/workspace/dist/dmg-output/LastThingsLast-${{ github.ref_name }}.dmg' \
             --dmg-title="LastThingsLast Installer" \
             --overwrite || echo "create-dmg failed"
 
